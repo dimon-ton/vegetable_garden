@@ -68,12 +68,12 @@ while True:
     if button_pressed and not last_button_status:
         
         if not relay01.switch():
-            msg = "OFF"
+            msg = "OFF" 
         else:
             msg = "ON"
 
         relay01.switch(msg)
-
+        sleep(0.5)
  
    
     last_button_status = button_status
@@ -121,4 +121,5 @@ def extract_data():
      
 
     
+
 
