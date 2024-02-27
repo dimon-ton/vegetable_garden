@@ -1,35 +1,86 @@
 from machine import ADC, Pin
 import time
+from time import sleep, sleep_ms
 
-class Relay:
-    def __init__(self, ePin, status='OFF')
+class Relay():
+    def __init__(self, ePin):
         self.pin = ePin
-        self.status = status
-        self.relay = Pin(self.pin, Pin.OUT)
+        self.r = Pin(self.pin, Pin.OUT)
+        self.r.value(1)
         
-    def switch(self):
+    def switch(self, status=''):
+        self.status = status
         if self.status == 'ON':
-            self.relay.value(0)
-        else
-            self.relay.value(1)
-        end if
+            self.r.value(0)
+        elif status == 'OFF':
+            self.r.value(1)
+        
+        return self.r.value()
+    
+
         
 
 class PushButton:
     def __init__(self, ePin):
         self.pin = ePin
-        self.push_button = Pin(self.pin, Pin.IN)
+        self.push_button = Pin(self.pin, Pin.IN, Pin.PULL_UP)
+        
         
     def getData(self):
-        while True:
             self.button_value = self.push_button.value()
             if self.button_value == 0:
-                print("button pressed")
-            sleep(0.2)
+                return self.button_value
+            else:
+                return self.button_value
+                
 
 
-relay = Relay(4, 'ON')
-relay.switch
+relay01 = Relay(4)
+pushB = PushButton(12)
+    
+
+status_relay_array = ["ON", "OFF"]
+
+relay_switch = 1
+relay_status = 1
+
+# button
+button_status = 1
+last_button_status = 1
+button_pressed = False
+
+while True:
+
+    
+    button_status = pushB.getData()
+    
+
+    if button_status != last_button_status:
+        time.sleep_ms(20)
+        
+        button_status = pushB.getData()
+        
+        if button_status == 0:
+            button_pressed = True
+        else:
+            button_pressed = False
+            
+    if button_pressed and not last_button_status:
+        
+        if not relay01.switch():
+            msg = "OFF"
+        else:
+            msg = "ON"
+
+        relay01.switch(msg)
+
+ 
+   
+    last_button_status = button_status
+        
+                
+        
+
 
 '''
  web for viewing ESP8266 Pinout
@@ -39,6 +90,10 @@ relay.switch
 soil = ADC(0) # read analog value through AO pin
 
 
+
+
+
+
 # set pin to turn on or off soil moisture sensor
 soil_pin = 5 # pin for moisture sensor
 soil_plug = Pin(soil_pin, Pin.OUT)
@@ -46,7 +101,7 @@ soil_plug = Pin(soil_pin, Pin.OUT)
 
 
 
-def extract_data:
+def extract_data():
     
     '''
     I want to loop for reading soil moisture value in 20 loops because I need still value from the sensor.
@@ -64,6 +119,6 @@ def extract_data:
     return soil_value
         
      
-    
+
     
 
