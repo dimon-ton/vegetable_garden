@@ -1,6 +1,36 @@
 from machine import ADC, Pin
 import time
 
+class Relay:
+    def __init__(self, ePin, status='OFF')
+        self.pin = ePin
+        self.status = status
+        self.relay = Pin(self.pin, Pin.OUT)
+        
+    def switch(self):
+        if self.status == 'ON':
+            self.relay.value(0)
+        else
+            self.relay.value(1)
+        end if
+        
+
+class PushButton:
+    def __init__(self, ePin):
+        self.pin = ePin
+        self.push_button = Pin(self.pin, Pin.IN)
+        
+    def getData(self):
+        while True:
+            self.button_value = self.push_button.value()
+            if self.button_value == 0:
+                print("button pressed")
+            sleep(0.2)
+
+
+relay = Relay(4, 'ON')
+relay.switch
+
 '''
  web for viewing ESP8266 Pinout
  https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP8266-NodeMCU-kit-12-E-pinout-gpio-pin.png?w=817&quality=100&strip=all&ssl=1
