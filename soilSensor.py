@@ -48,21 +48,22 @@ class SoilSensor:
         '''
             I want to loop for reading soil moisture value in 20 loops because I need still value from the sensor.
         '''
-        for i in range(20):
+    
             
-            self.soil_plug.value(1) # turn on soil moisture sensor
-            time.sleep(2) # wait for soil moisture sensor preparing to read value
-            
-    #         print(soil.read())
-            self.soil_value = self.soil.read() # read and keep the value in variable
-            
-            self.soil_plug.value(0) # turn off soil moisture sensor
+        self.soil_plug.value(1) # turn on soil moisture sensor
+        time.sleep(2) # wait for soil moisture sensor preparing to read value
+        
+#         print(soil.read())
+        self.soil_value = self.soil.read() # read and keep the value in variable
+        
+        self.soil_plug.value(0) # turn off soil moisture sensor
             
         return self.soil_value
         
 
 relay01 = Relay(4)
 pushB = PushButton(12)
+soil_sensor = SoilSensor(5)
     
 
 status_relay_array = ["ON", "OFF"]
@@ -107,10 +108,7 @@ while True:
             relay01.switch('ON')
         elif mode == 'OFF':
             relay01.switch('OFF')
-        
-        
-        print("Mode:", mode)
-        
+       
         
 #         if not relay01.switch():
 #             msg = "OFF"
@@ -122,7 +120,12 @@ while True:
 
 
         sleep(0.5)
- 
+        
+    
+    if mode == 'AUTO' and button_pressed == False:
+        print('process soil sensor', soil_sensor.extract_data())
+        time.sleep(1)
+        
    
     last_button_status = button_status
         
