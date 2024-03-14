@@ -1,3 +1,5 @@
+# main.py -- put your code here!
+
 from machine import ADC, Pin
 import time
 from time import sleep, sleep_ms
@@ -32,8 +34,32 @@ class PushButton:
                 return self.button_value
             else:
                 return self.button_value
-                
 
+class SoilSensor:
+    def __init__(self,soil_pin):
+        self.soil = ADC(0)
+        self.soil_pin = soil_pin # pin for moisture sensor default --> 5
+        self.soil_plug = Pin(self.soil_pin, Pin.OUT)
+        self.soil_plug.value(0) # turn off moisture sensor
+        
+        
+    def extract_data(self):
+    
+        '''
+            I want to loop for reading soil moisture value in 20 loops because I need still value from the sensor.
+        '''
+        for i in range(20):
+            
+            self.soil_plug.value(1) # turn on soil moisture sensor
+            time.sleep(2) # wait for soil moisture sensor preparing to read value
+            
+    #         print(soil.read())
+            self.soil_value = self.soil.read() # read and keep the value in variable
+            
+            self.soil_plug.value(0) # turn off soil moisture sensor
+            
+        return self.soil_value
+        
 
 relay01 = Relay(4)
 pushB = PushButton(12)
@@ -68,7 +94,7 @@ while True:
     if button_pressed and not last_button_status:
         
         if not relay01.switch():
-            msg = "OFF" 
+            msg = "OFF"
         else:
             msg = "ON"
 
@@ -87,39 +113,11 @@ while True:
  https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP8266-NodeMCU-kit-12-E-pinout-gpio-pin.png?w=817&quality=100&strip=all&ssl=1
 
 '''
-soil = ADC(0) # read analog value through AO pin
 
 
 
 
-
-
-# set pin to turn on or off soil moisture sensor
-soil_pin = 5 # pin for moisture sensor
-soil_plug = Pin(soil_pin, Pin.OUT)
-
-
-
-
-def extract_data():
-    
-    '''
-    I want to loop for reading soil moisture value in 20 loops because I need still value from the sensor.
-'''
-    for i in range(20):
-        
-        soil_plug.value(1) # turn on soil moisture sensor
-        time.sleep(2) # wait for soil moisture sensor preparing to read value
-        
-#         print(soil.read())
-        soil_value = soil.read() # read and keep the value in variable
-        
-        soil_plug.value(0) # turn off soil moisture sensor
-        
-    return soil_value
-        
      
 
     
-
 
