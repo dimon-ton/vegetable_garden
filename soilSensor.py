@@ -74,6 +74,7 @@ relay_status = 1
 button_status = 1
 last_button_status = 1
 button_pressed = False
+mode = "OFF"
 
 while True:
 
@@ -93,12 +94,33 @@ while True:
             
     if button_pressed and not last_button_status:
         
-        if not relay01.switch():
-            msg = "OFF"
+        
+        if mode == 'OFF':
+            mode = 'ON'
+        elif mode == 'ON':
+            mode = 'AUTO'
         else:
-            msg = "ON"
+            mode = 'OFF'
 
-        relay01.switch(msg)
+        # Update relay status accordingly
+        if mode == 'ON':
+            relay01.switch('ON')
+        elif mode == 'OFF':
+            relay01.switch('OFF')
+        
+        
+        print("Mode:", mode)
+        
+        
+#         if not relay01.switch():
+#             msg = "OFF"
+#         else:
+#             msg = "ON"
+# 
+#         relay01.switch(msg)
+
+
+
         sleep(0.5)
  
    
@@ -120,4 +142,3 @@ while True:
      
 
     
-
